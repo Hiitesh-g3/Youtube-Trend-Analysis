@@ -1,8 +1,7 @@
-# app.py
-
+from utils import wrangle
 import streamlit as st
-import pandas as pd
 import pickle
+import pandas as pd
 import random
 import plotly.express as px
 from pathlib import Path
@@ -26,10 +25,6 @@ with open(forecast_model_path, 'rb') as f:
 # --- Load Processed Data ---
 data_path = CURRENT_DIR.parent / 'data' / 'processed_data.csv'
 df = pd.read_csv(data_path)
-
-# ✅ Debug: Check data loaded
-# st.write(f"✅ Total Rows Loaded: {df.shape[0]}")
-# st.write(f"✅ Columns in Data:", list(df.columns))
 
 # --- Map category_id to category name if needed ---
 category_mapping = {
@@ -108,23 +103,23 @@ if st.button('Predict Trend'):
     if success_score >= 80:
         st.success("🔥 Excellent! Your video has a very high chance to perform well!")
     elif success_score >= 60:
-        st.info("👍 Good! Some small improvements can boost your chances even more.")
+        st.info("\ud83d\udc4d Good! Some small improvements can boost your chances even more.")
     else:
-        st.warning("⚠️ Try improving title, tags, length, or upload timing for better results.")
+        st.warning("\u26a0\ufe0f Try improving title, tags, length, or upload timing for better results.")
 
     # --- Actionable Tips Section ---
     st.header("🛠 Tips to Improve:")
 
     if not (30 <= len(title) <= 70):
-        st.warning("➔ Optimize your title length (30-70 characters is best).")
+        st.warning("\u2794 Optimize your title length (30-70 characters is best).")
     if len(tags.split(',')) <= 5:
-        st.warning("➔ Add more relevant tags (at least 6+).")
+        st.warning("\u2794 Add more relevant tags (at least 6+).")
     if not (5 <= video_length <= 15):
-        st.warning("➔ Adjust your video length to 5-15 minutes.")
+        st.warning("\u2794 Adjust your video length to 5-15 minutes.")
     if not (18 <= upload_hour <= 22):
-        st.warning("➔ Upload between 6 PM to 10 PM for maximum audience.")
+        st.warning("\u2794 Upload between 6 PM to 10 PM for maximum audience.")
     if trending_probability < 60:
-        st.warning("➔ Improve your title/tags or target trending topics for better chances.")
+        st.warning("\u2794 Improve your title/tags or target trending topics for better chances.")
 
     # --- Similar Trending Videos Section ---
     st.header("🎬 Similar Trending Videos You Might Like")
@@ -136,7 +131,7 @@ if st.button('Predict Trend'):
         suggestions = matching_videos.sample(3)
         st.success(f"✅ Showing trending videos in category: **{category}**")
     else:
-        st.warning(f"⚠️ No trending videos found for the category '**{category}**'. Showing random trending videos instead.")
+        st.warning(f"⚠\ufe0f No trending videos found for the category '**{category}**'. Showing random trending videos instead.")
         suggestions = df.sample(3)
 
     st.subheader("📹 Trending Video Recommendations:")
@@ -176,7 +171,7 @@ if 'category' in df.columns:
     )
     st.plotly_chart(fig1, use_container_width=True)
 else:
-    st.warning("⚠️ Category data not available.")
+    st.warning("⚠\ufe0f Category data not available.")
 
 # --- Graph 2: Best Upload Times ---
 st.subheader("Best Upload Times by Hour")
@@ -192,7 +187,7 @@ if 'publish_hour' in df.columns:
     )
     st.plotly_chart(fig2, use_container_width=True)
 else:
-    st.warning("⚠️ Publish hour data not available.")
+    st.warning("⚠\ufe0f Publish hour data not available.")
 
 # --- Graph 3: Views vs Likes Scatter ---
 st.subheader("📊 Views vs Likes Scatter Plot (Interactive)")
@@ -210,4 +205,4 @@ if 'views' in df.columns and 'likes' in df.columns:
     )
     st.plotly_chart(fig_scatter, use_container_width=True)
 else:
-    st.warning("⚠️ Views or Likes data not available.")
+    st.warning("⚠\ufe0f Views or Likes data not available.")
